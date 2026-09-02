@@ -1,0 +1,54 @@
+theme = "everblush"
+
+[editor]
+default-yank-register = "+"
+line-number = "relative"
+color-modes = true
+cursorline = true
+continue-comments = false
+preview-completion-insert = false
+completion-trigger-len = 1
+auto-pairs = false
+
+[editor.cursor-shape]
+insert = "bar"
+normal = "block"
+select = "underline"
+
+[editor.file-picker]
+hidden = false
+
+[keys.normal]
+C-s = ":w"
+C-q = ":bclose"
+C-tab = ":buffer-next"
+C-space = "signature_help"
+a = ["append_mode", "collapse_selection"]
+F = ["select_all", "select_regex"]
+
+# -------------------------
+# QWERTY to Colemak - UNEI arrows
+# [YJ] [UL] [IU] [..]
+#  [HH] [JN] [KE] [LI]
+#   [NK] [..] [..] [..]
+#
+# N <=> K (K is in the QWERTY N position)
+n = "move_char_left"
+N = "keep_selections"
+k = "search_next"
+K = "search_prev"
+# E <=> J (J now 'jumps words')
+e = "move_line_down"
+E = "join_selections"
+j = "move_next_word_end"
+J = "move_next_long_word_end"
+# H <=> I (H is just a sideways I)
+i = "move_char_right"
+I = "no_op"
+h = "insert_mode"
+H = "insert_at_line_start"
+# U <=> L (L is in the QWERTY U position)
+u = "move_line_up"
+U = "no_op"
+l = "undo"
+L = "redo"

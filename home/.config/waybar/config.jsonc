@@ -1,0 +1,78 @@
+{
+	"reload_style_on_change": true,
+	"position": "bottom",
+	"margin-left": 256,
+	"margin-right": 256,
+	"margin-bottom": 12,
+
+	"modules-left": ["clock"],
+	"modules-center": ["ext/workspaces"],
+	"modules-right": ["tray", "network", "wireplumber", "battery"],
+
+	"ext/workspaces": {
+		"on-click": "activate"
+	},
+
+	"tray": {
+		"spacing": 12,
+		"icon-size": 15
+	},
+
+	"network": {
+		"format": "",
+		"format-wifi": "{icon} {essid}",
+		"format-icons": ["󰤟", "󰤢", "󰤥", "󰤨"],
+		"format-ethernet": "󰈀",
+		"format-disconnected": "󰤩",
+		"format-disabled": "󰤭",
+		"tooltip-format": "{essid}"
+	},
+
+	"wireplumber": {
+		"format": "{icon}",
+		"format-icons": ["󰕿", "󰖀", "󰕾"],
+		"format-muted": "󰖁",
+		"on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+		"tooltip-format": "Volume: {volume}%",
+		"scroll-step": 5,
+		"menu": "on-click-right",
+		"menu-file": "~/.config/waybar/menu/wireplumber.xml",
+		"menu-actions": {
+			"mute-toggle": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+			"open-pavucontrol": "foot -T wiremix wiremix -v output -m 100"
+		}
+	},
+
+	"battery": {
+		"format": "{icon} {capacity}%",
+		"format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
+		"format-charging": "󰂄 {capacity}%",
+		"tooltip-format": "{timeTo} ({power}W)",
+		"interval": 30,
+		"on-click-right": "foot -T btop btop"
+	},
+	"battery#bat2": {
+		"bat": "bat2"
+	},
+
+	"clock": {
+		"interval": 1,
+		"format": "{:%H:%M}",
+		"tooltip-format": "{calendar}",
+		"calendar": {
+			"mode": "month",
+			"format": {
+				"months":     "<span color='#dadada'><b>{}</b></span>",
+				"days":       "<span color='#b3b9b8'><b>{}</b></span>",
+				"weekdays":   "<span color='#8ccf7e'><b>{}</b></span>",
+				"today":      "<span color='#dadada'><b><u>{}</u></b></span>"
+			}
+		},
+		"actions": {
+			"on-click-forward": "tz_up",
+			"on-click-backward": "tz_down",
+			"on-scroll-up": "shift_up",
+			"on-scroll-down": "shift_down"
+		}
+	}
+}

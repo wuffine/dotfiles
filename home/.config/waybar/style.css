@@ -1,0 +1,69 @@
+/* colors */
+@define-color background rgb(20, 27, 30);			/* background #141b1e; */
+@define-color background-alt rgb(35, 42, 45);	/* lighter background #232a2d; */
+@define-color foreground rgb(218, 218, 218);	/* foreground #dadada; */
+@define-color red rgb(229, 116, 116);					/* red #e57474; */
+@define-color green rgb(140, 207, 126);				/* green #8ccf7e; */
+@define-color yellow rgb(229, 199, 107);			/* yellow #e5c76b; */
+@define-color blue rgb(103, 176, 232);				/* blue #67b0e8; */
+@define-color magenta rgb(196, 127, 213);			/* magenta #c47fd5; */
+@define-color cyan rgb(108, 191, 191);				/* cyan #6cbfbf; */
+@define-color gray rgb(179, 185, 184);				/* gray #b3b9b8; */
+
+/* global settings */
+* {
+	all: unset;
+	font-family: monospace;
+}
+menu,
+tooltip,
+#tray menu,
+window#waybar {
+	background: @background;
+	color: @foreground;
+	border: 3px solid darker(@green);
+}
+.modules-left { margin: 0px 8px; }
+.modules-right { margin: 0px 8px; }
+#clock,
+#workspaces,
+#tray,
+#network,
+#wireplumber,
+#battery {
+	font-family: monospace;
+	font-size: 15px;
+	padding: 2px 8px;
+	margin: 6px 2px;
+}
+
+/* workspaces */
+#workspaces button {
+	margin: 2px 4px;
+	padding: 2px 6px;
+}
+#workspaces button.active {
+	background: darker(@green);
+	color: lighter(@foreground);
+	font-weight: bold;
+}
+
+/* hover effects */
+#workspaces button:hover {
+	background: @background;
+	color: @green;
+}
+menu menuitem:hover,
+#tray menu menuitem:hover { background: lighter(@background-alt); }
+
+/* menus, tooltips */
+menu,
+menu menuitem,
+tooltip,
+tooltip label,
+#tray menu,
+#tray menu menuitem {
+	padding: 6px;
+	font-size: 15px;
+	background: @background-alt;
+}

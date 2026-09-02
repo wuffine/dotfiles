@@ -1,0 +1,17 @@
+#!/bin/sh
+# Logout menu
+
+opt=$(printf "Shutdown\nReboot\nSleep\nLock\nStop auto-sleep\nStart auto-sleep" |
+    rofi -dmenu -sync "Power options: ")
+
+case "$opt" in
+    "Shutdown") loginctl poweroff ;;
+    "Reboot") loginctl reboot ;;
+    "Sleep") loginctl suspend ;;
+    "Lock") swaylock ;;
+    "Stop auto-sleep") pkill swayidle ;;
+    "Start auto-sleep") swayidle ;;
+    *) exit 1 ;;
+esac
+
+[ "$opt" ] && notify-send "$opt"

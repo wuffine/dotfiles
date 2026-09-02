@@ -1,0 +1,89 @@
+#!/bin/sh
+# Tiny POSIX compliant fetch script (linux-only)
+# Requires nerdfont to display icons
+
+# customise what to display here
+main() {
+    # call functions
+    PKG_COUNT=0  # set to 1 to show package count
+    func_list="title distro wm kernel shell disk colors" # uptime , memory 
+    for func in $func_list; do $func; done
+
+    # display information
+    printf "%b\n" "               $title
+  $(c 34 '⠀⠀⠀⠀⠀⠀⢀⣴⣾⠆')   $(c 35 )  $os ${wmname:+- $wmname}
+  $(c 34 '⢶⣶⡶⡴⢦⣼⣟⣻⣿⠀')   $(c 35 )  $kernel
+  $(c 34 '⠀⠙⣿⡳⣋⡿⣦⡲⣺')    $(c 35 )  $shell
+  $(c 34 '⠀⠀⠸⣼⣸⠟⠀⠛⠃')    $(c 35 󰏖)  $disk
+               $(c 35 󰏘)  $palette"
+}
+
+# colorsise input
+c() { printf "\033[%sm%s\033[0m" "$1" "$2"; }
+
+title() { title="${USER:-$(id -un)}@$(uname -n)"; }
+
+distro() {
+    # distribution name
+    [ -f /etc/os-release ] && . /etc/os-release
+    os="$(printf "%s" "${PRETTY_NAME:-Linux}" | tr '[:upper:]' '[:lower:]')"
+
+    # package count (add yours if not present)
+    [ "$PKG_COUNT" = 1 ] && {
+        case "$os" in
+            *void*) pkg="$(xbps-query -l | wc -l) (xbps)" ;;
+            *kiss*) pkg="$(ls /var/db/kiss/installed | wc -l) (kiss)" ;;
+            *alpine*|*chimera*) pkg="$(apk list --installed | wc -l) (apk)" ;;
+            *) pkg="0 (unknown)" ;;
+        esac
+    }
+}
+
+wm() {
+    wmname=$(printf "%s" "${XDG_CURRENT_DESKTOP:-unknown}" | 
+        tr '[:upper:]' '[:lower:]')
+}
+
+kernel () { read -r _ _ kernel _ < /proc/version; }
+
+shell() { shell=${SHELL##*/}; }
+
+uptime() {
+    read -r u _ </proc/uptime
+    u=${u%.*}
+    d=$((u/86400)); h=$((u/3600%24)); m=$((u/60%60))
+    [ "$d" -ge 1 ] && uptime="${d}d "
+    [ "$h" -ge 1 ] && uptime="${uptime}${h}h "
+    uptime="${uptime}${m}m"
+}
+
+memory() {
+    memory=$(awk '
+        /^MemTotal:/ {t=$2; u=$2}
+        /^Shmem:/ {u+=$2}
+        /^MemFree:|^Buffers:|^Cached:|^SReclaimable:/ {u-=$2}
+        END {
+            u/=1024; t/=1024
+            if(u>=1024) printf "%.2f GiB / %.2f GiB",u/1024,t/1024
+            else printf "%.0f MiB / %.0f MiB",u,t
+        }
+    ' /proc/meminfo)
+}
+
+disk() {
+    disk=$(df -k / | awk 'NR==2{
+        printf "%.2f GiB / %.2f GiB (%d%%)", $3/1048576, $2/1048576, $3*100/$2
+    }')
+}
+
+colors() {
+    palette="\033[48;5;0m   \033[0m\033[48;5;1m   \033[0m"
+    palette="$palette\033[48;5;2m   \033[0m\033[48;5;3m   \033[0m"
+    palette="$palette\033[48;5;4m   \033[0m\033[48;5;5m   \033[0m"
+    palette="$palette\033[48;5;6m   \033[0m\033[48;5;7m   \033[0m"
+}
+
+# fetch away!
+main
+
+
